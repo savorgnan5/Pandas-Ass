@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[24]:
+# In[75]:
 
 
 import pandas as pd
@@ -15,20 +15,20 @@ student_data = pd.read_csv(student_data_to_load)
 school_data_complete = pd.merge(student_data, school_data, how="left", on=["school_name", "school_name"])
 
 
-# In[25]:
+# In[76]:
 
 
 school_data_complete.head()
 
 
-# In[26]:
+# In[77]:
 
 
 number_students= school_data_complete["student_name"].count()
 number_students
 
 
-# In[27]:
+# In[78]:
 
 
 number_schools= school_data_complete["school_name"].unique()
@@ -41,14 +41,14 @@ len(number_schools)
 
 
 
-# In[28]:
+# In[79]:
 
 
 budget=school_data_complete["budget"].sum() 
 budget
 
 
-# In[29]:
+# In[80]:
 
 
 math= school_data_complete["math_score"]
@@ -58,10 +58,7 @@ math_average= math_one/math_two
 math_average
 
 
-# In[30]:
-
-
-
+# In[81]:
 
 
 reading= school_data_complete["reading_score"]
@@ -71,14 +68,14 @@ reading_average= reading_one/reading_two
 reading_average
 
 
-# In[31]:
+# In[82]:
 
 
 overal_score= (math_average + reading_average)/2
 overal_score
 
 
-# In[32]:
+# In[83]:
 
 
 pass_math= school_data_complete.loc[school_data_complete["math_score"]>=70,:]
@@ -88,7 +85,7 @@ pass_math_average= pass_math_one/pass_math_two
 pass_math_average
 
 
-# In[33]:
+# In[84]:
 
 
 pass_read= school_data_complete.loc[school_data_complete["reading_score"]>=70,:]
@@ -100,65 +97,65 @@ overal_score_pass= (pass_math_average + pass_read_average)/2
 overal_score_pass
 
 summary_table= pd.DataFrame({"Total Schools":[len(number_schools)],
-                            "Total Students":[number_students],
-                            "Total Budget":[budget],
-                            "Average Math Score":[math_average],
-                            "Average Reading Score":[reading_average],
-                            "% Passing Math":[pass_math_average],
-                            "% Passing Reading":[pass_read_average],
-                            "% Overall Passing Rate":[overal_score_pass]})
+                             "Total Students":[number_students],
+                             "Total Budget":[budget],
+                             "Average Math Score":[math_average],
+                             "Average Reading Score":[reading_average],
+                             "% Passing Math":[pass_math_average],
+                             "% Passing Reading":[pass_read_average],
+                             "% Overall Passing Rate":[overal_score_pass]})
 summary_table
 
 
-# In[34]:
+# In[85]:
 
 
 school_data_complete.head()
 
 
-# In[35]:
+# In[86]:
 
 
 number_schools= school_data_complete["school_name"].unique()
 number_schools
 
 
-# In[36]:
+# In[87]:
 
 
 group_school= school_data_complete.groupby(["school_name"]) 
 group_school
 
 
-# In[37]:
+# In[88]:
 
 
 group_rd_score=group_school["reading_score"].mean()
 group_rd_score
 
 
-# In[38]:
+# In[89]:
 
 
 group_math_score= group_school["math_score"].mean()
 group_math_score
 
 
-# In[39]:
+# In[90]:
 
 
 budget= group_school["budget"].mean()
 budget
 
 
-# In[40]:
+# In[91]:
 
 
 count_student= group_school["student_name"].count()
 count_student
 
 
-# In[41]:
+# In[92]:
 
 
 overal_score= (group_rd_score+group_math_score)/2
@@ -195,44 +192,48 @@ overal_score
 
 
 
-# In[42]:
+# In[93]:
 
 
-group_mean = group_school["reading_score"].mean()
-group_mean_R= group_mean[group_school["reading_score"].mean()>70]
-group_mean_R
-
-
-# In[43]:
-
-
-group_mean = group_school["math_score"].mean()
-group_mean_M= group_mean[group_school["math_score"].mean()>70]
+pass_read= school_data_complete.loc[school_data_complete["math_score"]>=70]
+group= pass_read.groupby(["school_name"])
+group1=group["math_score"].count()
+group_mean_M= (group1)/(count_student)*100
 group_mean_M
 
 
-# In[72]:
+# In[94]:
+
+
+pass_read= school_data_complete.loc[school_data_complete["reading_score"]>=70]
+group= pass_read.groupby(["school_name"])
+group1=group["reading_score"].count()
+group_mean_R= (group1)/(count_student)*100
+group_mean_R
+
+
+# In[95]:
 
 
 group_type= group_school["type"].describe()["top"]
 group_type
 
 
-# In[73]:
+# In[96]:
 
 
 budged_per_student= budget/count_student
 budged_per_student
 
 
-# In[74]:
+# In[97]:
 
 
 overal_pass_mean= (group_mean_M + group_mean_R)/2 
 overal_pass_mean
 summary_school=({"School Type":group_type,
                  "Total Students":count_student,
-                 "Total Budget":budget,
+                 "Total Budget":budget.map("{:,}".format),
                  "Per Student Budget":budged_per_student,
                  "Average Math Score":group_math_score,
                  "Average Reading Score":group_rd_score,
@@ -244,14 +245,14 @@ summary_school=pd.DataFrame(summary_school)
 summary_school
 
 
-# In[75]:
+# In[98]:
 
 
 summary_school_top= summary_school.sort_values(["% Overall Passing Rate"],ascending=False)
 summary_school_top.head(5)
 
 
-# In[76]:
+# In[99]:
 
 
 summary_school_botton= summary_school.sort_values(["% Overall Passing Rate"],ascending=True)
@@ -264,7 +265,7 @@ summary_school_botton.head(5)
 
 
 
-# In[77]:
+# In[100]:
 
 
 math_grade= school_data_complete.loc[:,["grade","school_name","math_score"]]
@@ -277,35 +278,35 @@ math_grade.head()
 
 
 
-# In[78]:
+# In[101]:
 
 
 mgnine= math_grade.loc[math_grade["grade"]=="9th",:].groupby(["school_name"])
 mgnine.mean()
 
 
-# In[79]:
+# In[102]:
 
 
 mgnten= math_grade.loc[math_grade["grade"]=="10th",:].groupby(["school_name"])
 mgnten.mean()
 
 
-# In[80]:
+# In[103]:
 
 
 mgneleven= math_grade.loc[math_grade["grade"]=="11th",:].groupby(["school_name"])
 mgneleven.mean()
 
 
-# In[81]:
+# In[104]:
 
 
 mgntwelve= math_grade.loc[math_grade["grade"]=="12th",:].groupby(["school_name"])
 mgntwelve.mean()
 
 
-# In[82]:
+# In[105]:
 
 
 math= ({"9th":mgnine.mean()["math_score"],
@@ -317,42 +318,42 @@ math= pd.DataFrame(math)
 math
 
 
-# In[83]:
+# In[106]:
 
 
 rd_grade= school_data_complete.loc[:,["grade","school_name","reading_score"]]
 rd_grade.head()
 
 
-# In[84]:
+# In[107]:
 
 
 rdnine= rd_grade.loc[rd_grade["grade"]=="9th",:].groupby(["school_name"])
 rdnine.mean()
 
 
-# In[85]:
+# In[108]:
 
 
 rdten= rd_grade.loc[rd_grade["grade"]=="10th",:].groupby(["school_name"])
 rdten.mean()
 
 
-# In[86]:
+# In[109]:
 
 
 rdeleven= rd_grade.loc[rd_grade["grade"]=="11th",:].groupby(["school_name"])
 rdeleven.mean()
 
 
-# In[87]:
+# In[110]:
 
 
 rdtwelve= rd_grade.loc[rd_grade["grade"]=="12th",:].groupby(["school_name"])
 rdtwelve.mean()
 
 
-# In[88]:
+# In[111]:
 
 
 rd= ({"9th":rdnine.mean()["reading_score"],
@@ -364,7 +365,7 @@ rd= pd.DataFrame(math)
 rd
 
 
-# In[89]:
+# In[112]:
 
 
 
@@ -378,7 +379,7 @@ b_p_s= pd.DataFrame({"Per Student Budget":budged_per_student,
 b_p_s.head()
 
 
-# In[90]:
+# In[113]:
 
 
 
@@ -389,33 +390,33 @@ b_b = pd.cut(b_p_s["Per Student Budget"], bins, labels=group_names)
 b_b
 
 
-# In[91]:
+# In[114]:
 
 
 b_p_s["Bin_Badget"]=b_b
 
 
-# In[92]:
+# In[115]:
 
 
 b_p_s.head()
 
 
-# In[93]:
+# In[116]:
 
 
 bins_badget= b_p_s.groupby("Bin_Badget")
 bins_badget.mean().drop("Per Student Budget",axis=1)
 
 
-# In[94]:
+# In[117]:
 
 
 school_size= group_school["size"].mean()
 school_size
 
 
-# In[95]:
+# In[118]:
 
 
 size= pd.DataFrame({"school_size":school_size,
@@ -427,7 +428,7 @@ size= pd.DataFrame({"school_size":school_size,
 size.head()
 
 
-# In[96]:
+# In[119]:
 
 
 bins = [0, 1000, 2000, 5000]
@@ -437,7 +438,7 @@ size["Bins_size"]=pd.cut(size["school_size"], bins, labels=group_names)
 size.groupby("Bins_size").mean().drop("school_size",axis=1)
 
 
-# In[97]:
+# In[120]:
 
 
 #This is how I select the type
@@ -445,7 +446,7 @@ school_type= group_school["type"].describe()["top"]
 school_type.head()               
 
 
-# In[98]:
+# In[121]:
 
 
 type_pd= pd.DataFrame({"Average Math Score":group_math_score,
@@ -457,36 +458,32 @@ type_pd= pd.DataFrame({"Average Math Score":group_math_score,
 type_pd.head()
 
 
-# In[99]:
+# In[122]:
 
 
 group_type= type_pd.groupby(["school_type"])
 group_type.mean()
 
-Interpretation of the data:
-    
-1-The district type of school has lowers math score, reading score, average math passing score, average reading passing score and average overall passing score.
-2-The large school has lowers math score, reading score, average math passing score, average reading passing score and average overall passing score.
-3-The school with highest budget per students has lowers math score, reading score average passing math score, average reading passing score and overall passing score.
+
+# In[ ]:
 
 
 
 
 
+# In[ ]:
 
 
 
 
 
+# In[ ]:
 
 
 
 
 
-
-
-
-
+# In[ ]:
 
 
 
