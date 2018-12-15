@@ -7,3 +7,4 @@ Interpretation of the data, there is the following trends:
 2-The large school has lowers math score, reading score, percentage math passing score, percentage reading passing score and average overall passing score in comparison to the mediun and small school.
 
 3-The school with highest budget per students has lowers math score, reading score percentage passing math score, percentage reading passing score and overall passing score in comparison to the school with lower budget per student.
+There is scream shot of part of the data that doe not show right in the git hub push.
