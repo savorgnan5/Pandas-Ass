@@ -1,6 +1,6 @@
 # Pandas-Ass
 
-Interpretation of the data,there is the following trend:
+Interpretation of the data, there is the following trends:
     
 1-The district type of school has lower math score, reading score, percentage math passing score, percentage reading passing score and average overall passing score in comparison to the charter school.
 
